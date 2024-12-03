@@ -9,7 +9,7 @@ import useAuthStore from '../../../store/authStore';
 
 function Page(props) {
     const LOCAL_API_BASE_URL = process.env.NEXT_PUBLIC_LOCAL_API_BASE_URL
-    const API_URL = `${LOCAL_API_BASE_URL}/members/join`;
+    const API_URL = `${LOCAL_API_BASE_URL}/members/login`;
     const router = useRouter(); // useRouter 초기화
 
     const {login} = useAuthStore(); // zustand login 함수 가져오기
@@ -36,7 +36,7 @@ function Page(props) {
                 if (data.success) {
                     alert(data.message);
                     login(data.data, data.token);
-                    // 성공했을 때 login 페이지로 페이지이동
+                    // 성공했을 때 메인페이지로 이동
                     router.push('/');
                 } else {
                     alert(data.message);

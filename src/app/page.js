@@ -10,7 +10,7 @@ export default function Home() {
   return (
     // 해당 내용은 부모컴포넌트의 props => {children} 에 삽입된다.
     <>
-    <h1>welcome</h1>
+    
     {/* 이미지 자체를 import 하지 않으면 너비와 높이를 넣어줘야 한다. */}
     {/* <p><Image src="/images/coffee-blue.jpg" alt="" width={100} height={100} /></p> */}
 
@@ -18,6 +18,7 @@ export default function Home() {
     {/* <p><Image src={img01} alt="" /></p> */}
     {/* <p><Image src={img01} alt="" width={100} height={100}/></p> */}
     
+    <itemList />
     </>
   );
 }

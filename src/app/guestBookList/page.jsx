@@ -13,8 +13,9 @@ function Page(props) {
         axios.get(
             API_URL
         ).then(res =>{
-            setList(res.data);
-            console.log(res.data);
+            setList(res.data.data);
+            // setList([]);
+            console.log(res.data.data);
         }).catch(
             console.log("에러 발생")
         )
@@ -35,7 +36,11 @@ function Page(props) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {list.map((item) => (
+                        {list.length === 0 ? 
+                            <TableRow>
+                                <TableCell className="table-cell" colSpan={2}>등록된 정보가 없습니다.</TableCell>
+                            </TableRow>
+                        : list.map((item) => (
                             <TableRow key={item.gb_idx}>
                                 <TableCell className="table-cell">{item.gb_name}</TableCell>
                                 <TableCell className="table-cell">
