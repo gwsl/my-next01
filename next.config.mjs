@@ -1,19 +1,20 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     reactStrictMode: true,
-    async rewrites(){
-        return[
+    async rewrites() {
+        return [
             {
-                // /makeup 으로 시작하는 면  destination 주소 의 정보를 가져올수 있다.
-                source : "/makeup/:path*",
-                destination:"http://makeup-api.herokuapp.com/api/:path*"
+                source: "/makeup/:path*",
+                destination: `${process.env.NEXT_PUBLIC_MAKEUP_API_BASE_URL}/:path*`, // Makeup API 경로
             },
             {
-                // /guestbook 으로 시작하는면  destination 주소 의 정보를 가져올수 있다.
-                source : "/guestbook/:path*",
-                destination:"http://localhost:8080/api/guestbook/:path*"
+                source: "/guestbook/:path*",
+                destination: `${process.env.NEXT_PUBLIC_LOCAL_API_BASE_URL}/guestbook/:path*`, // Guestbook API 경로
             },
- 
+            {
+                source: "/members/:path*",
+                destination: `${process.env.NEXT_PUBLIC_LOCAL_API_BASE_URL}/members/:path*`, // Members API 경로
+            },
         ];
     }
 };

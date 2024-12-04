@@ -2,7 +2,7 @@
 import { Avatar, Button, FormControl, Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 // zustand store 호출
 import useAuthStore from '../../../store/authStore';
@@ -12,31 +12,30 @@ function Page(props) {
     const API_URL = `${LOCAL_API_BASE_URL}/members/login`;
     const router = useRouter(); // useRouter 초기화
 
-    const {login} = useAuthStore(); // zustand login 함수 가져오기
-    
+    const { login } = useAuthStore(); // zustand login 함수 가져오기 
+
 
     // 텍스트필드 초기화
     const initUvo = {
         m_id: "",
         m_pw: ""
     }
+    const [uvo, setUvo] = useState(initUvo);
+    const isBtnChk = !uvo.m_id || !uvo.m_pw;
     function changeUvo(e) {
         const { name, value } = e.target;
         setUvo(prev => ({
             ...prev, [name]: value
         }));
     }
-    const [uvo, setUvo] = useState(initUvo);
-    const isBtnChk = !uvo.m_id || !uvo.m_pw ;
-
     function goServer(params) {
         axios.post(API_URL, uvo)
             .then(response => {
                 const data = response.data;
+                console.log(response);
                 if (data.success) {
                     alert(data.message);
                     login(data.data, data.token);
-                    // 성공했을 때 메인페이지로 이동
                     router.push('/');
                 } else {
                     alert(data.message);
@@ -44,8 +43,6 @@ function Page(props) {
                 }
             });
     }
-
-
     return (
         <div>
             <FormControl>
