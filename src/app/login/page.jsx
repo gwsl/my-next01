@@ -43,6 +43,15 @@ function Page(props) {
                 }
             });
     }
+
+    function handleKakaoLogin() {
+        // 카카오 인증 엔드포인트 (리다이렉트 주소)
+        window.location.href = "http://localhost:8080/oauth2/authorization/kakao";
+    }
+
+    function handleNaverLogin() {
+        window.location.href = "http://localhost:8080/oauth2/authorization/naver";
+    }
     return (
         <div>
             <FormControl>
@@ -52,6 +61,8 @@ function Page(props) {
                     <TextField type='text' label='아이디' name='m_id' value={uvo.m_id} onChange={changeUvo} />
                     <TextField type='password' label='패스워드' name='m_pw' value={uvo.m_pw} onChange={changeUvo} />
                     <Button fullWidth variant='contained' disabled={isBtnChk} onClick={goServer}>Sign in</Button>
+                    <Button fullWidth variant='contained' onClick={handleKakaoLogin} style={{ backgroundColor: '#FFEB3B' }}>카카오 로그인</Button>
+                    <Button fullWidth variant='contained' onClick={handleNaverLogin} style={{ backgroundColor: '#03C75A' }}>네이버 로그인</Button>
                 </Stack>
             </FormControl>
         </div>

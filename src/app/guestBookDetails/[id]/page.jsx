@@ -10,10 +10,11 @@ import { useRouter } from 'next/navigation';
 
 function Page({ params }) {
     const LOCAL_API_BASE_URL = process.env.NEXT_PUBLIC_LOCAL_API_BASE_URL;
+    const LOCAL_IMG_URL = process.env.NEXT_PUBLIC_LOCAL_IMG_URL;
     const [item, setItem] = useState(null);       // 데이터 상태
     const [loading, setLoading] = useState(true); // 로딩 상태
     const [error, setError] = useState(null);     // 에러 상태
-    const { isAuthenticated, token } = useAuthStore();       // 로그인 상태
+    const { isAuthenticated, token, user } = useAuthStore();       // 로그인 상태
     const router = useRouter();
 
     useEffect(() => {
@@ -90,6 +91,8 @@ function Page({ params }) {
             </div>
         );
     }
+    // 글 작성자와 현재 로그인한 사용자 비교
+    const isOwner = isAuthenticated && String(user.m_id) === String(item.gb_id);
 
     // 로딩 완료 후
     return (
@@ -108,7 +111,7 @@ function Page({ params }) {
                         </TableRow>
                         <TableRow>
                             <TableCell className="table-cell">CONTENT</TableCell>
-                            <TableCell className="table-cell">{item.gb_content}</TableCell>
+                            <TableCell className="table-cell"><pre>{item.gb_content}</pre></TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell className="table-cell">EMAIL</TableCell>
@@ -118,6 +121,33 @@ function Page({ params }) {
                             <TableCell className="table-cell">DATE</TableCell>
                             <TableCell className="table-cell">{item.gb_regdate.substring(0, 10)}</TableCell>
                         </TableRow>
+                        {item.gb_filename && (
+                            <TableRow>
+                                <TableCell className="table-cell">Image</TableCell>
+                                <TableCell className="table-cell">
+                                    {isOwner ? (
+                                        <>
+                                            <img
+                                                src={`${LOCAL_IMG_URL}/${item.gb_filename}`}
+                                                alt="image"
+                                                style={{ width: "150px", cursor: "pointer", marginRight: "10px" }} />
+                                            <a href={`${LOCAL_API_BASE_URL}/guestbook/download/${item.gb_filename}`}
+                                                target='_blank'
+                                                rel="noopener noreferrer"
+                                                style={{ textDecoration: "none", color: "#007bff" }}
+                                            > 다운로드 </a>
+
+                                        </>) : (
+                                        <>
+                                            <img
+                                                src={`${LOCAL_IMG_URL}/${item.gb_filename}`}
+                                                alt="image"
+                                                style={{ width: "150px", cursor: "pointer", marginRight: "10px" }} />
+                                            <span>다운로드 권한없음</span>
+                                        </>)}
+                                </TableCell>
+                            </TableRow>
+                        )}
                     </TableBody>
                 </Table>
             </TableContainer>
@@ -125,14 +155,14 @@ function Page({ params }) {
                 <Button variant='contained'
                     color='primary'
                     onClick={handleUpdate}
-                    disabled={!isAuthenticated}
+                    disabled={!isOwner}
                 >수정</Button>
 
                 <Button variant='contained'
                     color='error'
                     onClick={handleDelete}
                     style={{ marginLeft: "10px" }}
-                    disabled={!isAuthenticated}
+                    disabled={!isOwner}
                 >삭제</Button>
             </div>
         </>

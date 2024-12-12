@@ -1,12 +1,10 @@
-import Image from 'next/image';
-import React from 'react';
-
+import KakaoMap from '../kakaoMap/page'
 function ReadOne(props) {
     return (
         <>
+            
             <h2>Read-1</h2>
-            <Image src="/images/tree-1.jpg" alt=""
-                width={300} height={300} />
+            <KakaoMap />
         </>
     );
 }
